@@ -26,12 +26,33 @@ public class JTableArrayList extends JTable implements MouseListener {
     ArrayList list;
     Object selectObject;
     HashMap caps;
-    DefaultTableModel model = new DefaultTableModel();
+    DefaultTableModel model = new DefaultTableModel(){
+
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return isTableEditable( row,  column);
+        }
+    };
     String propertyCaps[];
     String valuesCaps[];
+    boolean editDef;
+    
+    public boolean isTableEditable(int row, int column){
+        return editDef;
+    }
 
+    public boolean isEditDef() {
+        return editDef;
+    }
+
+    public void setEditDef(boolean editDef) {
+        this.editDef = editDef;
+    }
+    
+    
     public JTableArrayList() {
         super(null,null,null);
+     
     }
 
     public ArrayList<?> getList() {
