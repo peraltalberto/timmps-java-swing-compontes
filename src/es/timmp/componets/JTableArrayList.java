@@ -21,10 +21,10 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author aperalta
  */
-public class JTableArrayList extends JTable implements MouseListener {
+public class JTableArrayList<T> extends JTable implements MouseListener {
 
-    ArrayList list;
-    Object selectObject;
+    ArrayList<T> list;
+    T selectObject;
     HashMap caps;
     DefaultTableModel model = new DefaultTableModel(){
 
@@ -55,11 +55,11 @@ public class JTableArrayList extends JTable implements MouseListener {
      
     }
 
-    public ArrayList<?> getList() {
+    public ArrayList<T> getList() {
         return list;
     }
 
-    public void setList(ArrayList<?> list) {
+    public void setList(ArrayList<T> list) {
         System.out.println(list.size());
         this.list = list;
         System.out.println(this.list.size());
@@ -96,12 +96,19 @@ public class JTableArrayList extends JTable implements MouseListener {
 
     }
 
-    public void addElement(Object e) {
+    public void addElement(T e) {
         list.add(e);
         cargarFilas();
     }
-    public Object getSelectElement(){
+    public T getSelectElement(){
         return list.get(this.getSelectedRow());
+    }
+    public ArrayList<T> getSelectedElements(){
+        ArrayList<T> res = new ArrayList<T>();
+        for (int i : this.getSelectedRows()){
+            res.add(list.get(i));
+        }
+        return res;
     }
     private void cargarColumnas() {
 
