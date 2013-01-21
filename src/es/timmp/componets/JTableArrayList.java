@@ -60,9 +60,9 @@ public class JTableArrayList<T> extends JTable implements MouseListener {
     }
 
     public void setList(ArrayList<T> list) {
-        System.out.println(list.size());
+       // System.out.println(list.size());
         this.list = list;
-        System.out.println(this.list.size());
+       // System.out.println(this.list.size());
         cargarFilas();
 
     }
@@ -103,6 +103,13 @@ public class JTableArrayList<T> extends JTable implements MouseListener {
     public T getSelectElement(){
         return list.get(this.getSelectedRow());
     }
+    public ArrayList<T> getSelectedElements(){
+        ArrayList<T> res = new ArrayList<T>();
+        for (int i : this.getSelectedRows()){
+            res.add(list.get(i));
+        }
+        return res;
+    }
     private void cargarColumnas() {
 
         if (this.model.getColumnCount() > 0) {
@@ -125,7 +132,8 @@ public class JTableArrayList<T> extends JTable implements MouseListener {
             HashMap cabs = this.caps;
            if (this.model.getRowCount() > 0) {
                //this.model = new DefaultTableModel();
-               //System.out.println("tamaño: "+this.model.getRowCount()); 
+               //cargarColumnas();
+              // System.out.println("tamaño: "+this.model.getRowCount()); 
                for (int i = this.model.getRowCount()-1; i >=0 ; i--) {
                   // System.out.println(i); 
                    this.model.removeRow(i);
