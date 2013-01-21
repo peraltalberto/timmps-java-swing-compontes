@@ -21,10 +21,10 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author aperalta
  */
-public class JTableArrayList extends JTable implements MouseListener {
+public class JTableArrayList<T> extends JTable implements MouseListener {
 
-    ArrayList list;
-    Object selectObject;
+    ArrayList<T> list;
+    T selectObject;
     HashMap caps;
     DefaultTableModel model = new DefaultTableModel(){
 
@@ -55,11 +55,11 @@ public class JTableArrayList extends JTable implements MouseListener {
      
     }
 
-    public ArrayList<?> getList() {
+    public ArrayList<T> getList() {
         return list;
     }
 
-    public void setList(ArrayList<?> list) {
+    public void setList(ArrayList<T> list) {
         System.out.println(list.size());
         this.list = list;
         System.out.println(this.list.size());
@@ -96,11 +96,11 @@ public class JTableArrayList extends JTable implements MouseListener {
 
     }
 
-    public void addElement(Object e) {
+    public void addElement(T e) {
         list.add(e);
         cargarFilas();
     }
-    public Object getSelectElement(){
+    public T getSelectElement(){
         return list.get(this.getSelectedRow());
     }
     private void cargarColumnas() {
@@ -125,10 +125,9 @@ public class JTableArrayList extends JTable implements MouseListener {
             HashMap cabs = this.caps;
            if (this.model.getRowCount() > 0) {
                //this.model = new DefaultTableModel();
-               //cargarColumnas();
-               System.out.println("tamaño: "+this.model.getRowCount()); 
+               //System.out.println("tamaño: "+this.model.getRowCount()); 
                for (int i = this.model.getRowCount()-1; i >=0 ; i--) {
-                   System.out.println(i); 
+                  // System.out.println(i); 
                    this.model.removeRow(i);
                     
                 }

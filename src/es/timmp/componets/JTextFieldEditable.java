@@ -13,15 +13,16 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JTextField;
 
 /**
  *
  * @author aperalta
  */
-public class JButtonEditable extends JButton implements MouseMotionListener {
+public class JTextFieldEditable extends JTextField implements MouseMotionListener {
 
     private boolean edicion;
-    public JButtonEditable(){
+    public JTextFieldEditable(){
         super();
         edicion = false;
         addMouseMotionListener(this);
@@ -34,7 +35,6 @@ public class JButtonEditable extends JButton implements MouseMotionListener {
         super.setLocation(
                 super.getX() + me.getX() - super.getWidth() / 2,
                 super.getY() + me.getY() - super.getHeight() / 2);
-        System.out.println(super.getX()+" - "+super.getY()+" - "+super.getWidth()+" - "+super.getHeight());
         }
        
    }

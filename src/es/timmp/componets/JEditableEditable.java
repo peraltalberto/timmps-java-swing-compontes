@@ -6,11 +6,8 @@ package es.timmp.componets;
  */
 
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.AffineTransform;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
@@ -18,15 +15,14 @@ import javax.swing.JComponent;
  *
  * @author aperalta
  */
-public class JButtonEditable extends JButton implements MouseMotionListener {
+public class JEditableEditable extends JButton implements MouseMotionListener {
 
     private boolean edicion;
-    public JButtonEditable(){
+    public JEditableEditable(){
         super();
         edicion = false;
         addMouseMotionListener(this);
     }
-  
     
     @Override
     public void mouseDragged(MouseEvent me) {
@@ -34,7 +30,6 @@ public class JButtonEditable extends JButton implements MouseMotionListener {
         super.setLocation(
                 super.getX() + me.getX() - super.getWidth() / 2,
                 super.getY() + me.getY() - super.getHeight() / 2);
-        System.out.println(super.getX()+" - "+super.getY()+" - "+super.getWidth()+" - "+super.getHeight());
         }
        
    }
