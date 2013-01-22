@@ -9,7 +9,10 @@ import java.awt.Component;
 import java.awt.LayoutManager;
 import java.io.File;
 import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -28,7 +31,7 @@ import org.xml.sax.InputSource;
 public class JPanelContentEd extends JPanel {
 
     private String xml = "<panel><components>"
-            + "<component class=\"javax.swing.JButton\" "
+            + "<component name=\"JButton\" class=\"javax.swing.JButton\" "
             + "x=\"50\" y=\"50\" widht=\"50\" heigth=\"50\">"
             + "<text>prueba</text>"
             + "</component></components></panel>";
@@ -81,7 +84,7 @@ public class JPanelContentEd extends JPanel {
                     Integer.parseInt(elemento.getAttribute("y")), 
                     Integer.parseInt(elemento.getAttribute("widht")), 
                     Integer.parseInt(elemento.getAttribute("heigth")));
-                o.setName(elemento.getAttribute("name"));
+                    o.setName(elemento.getAttribute("name"));
                 
                 this.add((Component)c.cast(o));
             }
@@ -100,6 +103,39 @@ public class JPanelContentEd extends JPanel {
         System.err.println("This component does not support layout");
     }
    
+    public String getXmlComponents(){
+        String xml = "<panel>\n\t<components>";
+        Component[] cp = this.getComponents();
+        for(Component c : cp){
+            
+                System.out.println(c.getClass());
+                xml += "\n\t\t<component name=\""+c.getName()+"\" class=\""+c.getClass().getName()+"\" "
+                + "x=\""+c.getX()+"\" y=\""+c.getY()+"\" widht=\""+c.getWidth()
+            
+                        +"\" heigth=\""+c.getHeight()+"\">";
+           try {
+                try {
+                    xml += "\n\t\t\t<text>"+c.getClass().getMethod("getText").invoke(c) +"</text>";
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(JPanelContentEd.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalArgumentException ex) {
+                    Logger.getLogger(JPanelContentEd.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InvocationTargetException ex) {
+                    Logger.getLogger(JPanelContentEd.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (NoSuchMethodException ex) {
+                Logger.getLogger(JPanelContentEd.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                Logger.getLogger(JPanelContentEd.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           xml += "\n\t\t</component>";
+        }
+        xml +="\n\t</components>\n</panel>";
+        return xml;
+    
+    }
+    
+    
     private static String getTagValue(String sTag, Element eElement)
  {
 	  NodeList nlList= eElement.getElementsByTagName(sTag).item(0).getChildNodes();
