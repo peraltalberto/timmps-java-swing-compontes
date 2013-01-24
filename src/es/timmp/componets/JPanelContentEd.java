@@ -7,7 +7,11 @@ package es.timmp.componets;
 import es.timmp.componets.util.TZUtils;
 import java.awt.Component;
 import java.awt.LayoutManager;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,7 +19,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -91,6 +97,7 @@ public class JPanelContentEd extends JPanel {
 
 	    }
     }
+          this.updateUI();
   } catch (Exception e) {
     e.printStackTrace();
   }
@@ -148,5 +155,83 @@ public class JPanelContentEd extends JPanel {
         JPanelContentEd jp = new JPanelContentEd();
         jp.setComponents("");
         
+    }
+    public void openFile(){
+        JFileChooser fc = new JFileChooser();
+        FileNameExtensionFilter filtroImagen=new FileNameExtensionFilter("Diseños de comedor","tpvt");
+        fc.setFileFilter(filtroImagen);
+        fc.showOpenDialog(this);
+        
+      
+         File archivo = null;
+      FileReader fr = null;
+      BufferedReader br = null;
+
+      try {
+         // Apertura del fichero y creacion de BufferedReader para poder
+         // hacer una lectura comoda (disponer del metodo readLine()).
+         archivo = fc.getSelectedFile();
+         fr = new FileReader (archivo);
+         br = new BufferedReader(fr);
+
+         // Lectura del fichero
+         this.xml = "";
+         String linea;
+         while((linea=br.readLine())!=null)
+            this.xml += linea;
+         
+         this.setComponents(xml);
+      }
+      catch(Exception e){
+         e.printStackTrace();
+      }finally{
+         // En el finally cerramos el fichero, para asegurarnos
+         // que se cierra tanto si todo va bien como si salta 
+         // una excepcion.
+         try{                    
+            if( null != fr ){   
+               fr.close();     
+            }                  
+         }catch (Exception e2){ 
+            e2.printStackTrace();
+         }
+      }
+        
+    }
+    public void saveFile(){
+        JFileChooser fc = new JFileChooser();
+        FileNameExtensionFilter filtroImagen=new FileNameExtensionFilter("Diseños de comedor","tpvt");
+        fc.addChoosableFileFilter(filtroImagen);
+        
+        fc.showSaveDialog(this);
+        
+        File f = fc.getSelectedFile();
+        saveFile(f);
+    } 
+    public void saveFile(File f){
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        try
+        {
+            fichero = new FileWriter(f);
+            pw = new PrintWriter(fichero);
+               
+            pw.write(this.getXmlComponents());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+        }
+    }
+    public void saveFile(String path){
+       saveFile(new File(path));
     }
 }
